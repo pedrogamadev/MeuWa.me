@@ -4,15 +4,27 @@
 
 @layer base {
   html {
-    @apply bg-background text-white font-sans scroll-smooth;
+    @apply font-sans scroll-smooth transition-colors duration-300;
+  }
+  html.dark {
+    @apply bg-background text-white;
+  }
+  html.light {
+    @apply bg-slate-100 text-slate-900;
   }
   body {
-    @apply min-h-screen bg-background antialiased;
+    @apply min-h-screen bg-transparent antialiased;
   }
 }
 
 @layer components {
   .card {
-    @apply bg-zinc-900/80 backdrop-blur border border-white/5 rounded-3xl shadow-lg shadow-black/40;
+    @apply rounded-3xl border backdrop-blur transition-colors duration-300;
+  }
+  html.dark .card {
+    @apply border-white/5 bg-zinc-900/80 text-white shadow-lg shadow-black/40;
+  }
+  html.light .card {
+    @apply border-slate-200 bg-white text-slate-900 shadow-lg shadow-slate-200/60;
   }
 }

@@ -1,14 +1,16 @@
 import { Instagram, Sparkles, X } from 'lucide-react';
 import type { MouseEventHandler } from 'react';
+import { cn } from '../lib/utils';
 import { Button } from './Button';
 
 interface InstagramModalProps {
   open: boolean;
   onClose: () => void;
   onVisit: () => void;
+  theme: 'light' | 'dark';
 }
 
-export function InstagramModal({ open, onClose, onVisit }: InstagramModalProps) {
+export function InstagramModal({ open, onClose, onVisit, theme }: InstagramModalProps) {
   if (!open) {
     return null;
   }
@@ -26,11 +28,23 @@ export function InstagramModal({ open, onClose, onVisit }: InstagramModalProps) 
       className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 px-4 backdrop-blur"
       onClick={handleBackdropClick}
     >
-      <div className="relative w-full max-w-sm rounded-3xl border border-white/10 bg-zinc-950/90 p-6 text-white shadow-2xl shadow-black/50 animate-fade-in">
+      <div
+        className={cn(
+          'relative w-full max-w-sm rounded-3xl border p-6 shadow-2xl animate-fade-in',
+          theme === 'dark'
+            ? 'border-white/10 bg-zinc-950/90 text-white shadow-black/50'
+            : 'border-slate-200 bg-white text-slate-900 shadow-slate-200/70',
+        )}
+      >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition hover:text-white"
+          className={cn(
+            'absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border transition',
+            theme === 'dark'
+              ? 'border-white/10 bg-white/5 text-white/70 hover:text-white'
+              : 'border-slate-200 bg-slate-100 text-slate-500 hover:text-slate-900',
+          )}
           aria-label="Fechar sugestão do Instagram"
         >
           <X size={16} />
@@ -41,11 +55,12 @@ export function InstagramModal({ open, onClose, onVisit }: InstagramModalProps) 
             <Sparkles size={20} />
           </span>
           <h2 className="text-xl font-semibold">Conheça a Arabella.dev no Instagram</h2>
-          <p className="text-sm text-white/70">
+          <p className={cn('text-sm', theme === 'dark' ? 'text-white/70' : 'text-slate-600')}>
             Conteúdos semanais sobre criação digital, design e inovação para o seu negócio brasileiro.
           </p>
           <div className="flex w-full flex-col gap-3">
             <Button
+              theme={theme}
               type="button"
               onClick={onVisit}
               icon={<Instagram size={18} />}
@@ -53,7 +68,7 @@ export function InstagramModal({ open, onClose, onVisit }: InstagramModalProps) 
             >
               Seguir Arabella.dev
             </Button>
-            <Button type="button" onClick={onClose} variant="ghost" className="w-full">
+            <Button theme={theme} type="button" onClick={onClose} variant="ghost" className="w-full">
               Talvez depois
             </Button>
           </div>
