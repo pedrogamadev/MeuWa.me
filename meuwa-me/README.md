@@ -1,73 +1,50 @@
-# React + TypeScript + Vite
+# MeuWa.me — WhatsApp Link Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MeuWa.me é uma aplicação web de página única criada com **Vite + React + TypeScript** e estilizada com **TailwindCSS**. Ela permite gerar links personalizados do WhatsApp (`https://wa.me/`) com número de telefone e mensagem pré-preenchida, além de oferecer pré-visualização, cópia rápida, abertura no WhatsApp e geração de QR Code.
 
-Currently, two official plugins are available:
+## 📦 Pré-requisitos
+- [Node.js](https://nodejs.org/) versão 18 ou superior (inclui o npm)
+- npm 9+ (instalado junto com o Node.js)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> Se você usa outra versão do gerenciador de pacotes (pnpm, yarn), adapte os comandos abaixo conforme necessário.
 
-## React Compiler
+## 🚀 Como executar o projeto
+1. Instale as dependências do projeto (incluindo `lucide-react`, `qrcode.react`, `tailwindcss` e demais bibliotecas declaradas no `package.json`):
+   ```bash
+   npm install
+   ```
+2. Execute o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+3. Abra o navegador em [http://localhost:5173](http://localhost:5173) para acessar a aplicação.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## 🛠 Scripts disponíveis
+- `npm run dev`: inicia o servidor de desenvolvimento com Vite
+- `npm run build`: gera a build de produção
+- `npm run preview`: serve a build de produção localmente
+- `npm run lint`: executa o ESLint
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📁 Estrutura principal
+```
+meuwa-me/
+├── public/
+├── src/
+│   ├── components/
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css
+├── package.json
+└── tailwind.config.js
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ✨ Principais dependências
+- [`react`](https://react.dev/) e [`react-dom`](https://react.dev/learn/start-a-new-react-project) — base da interface
+- [`lucide-react`](https://www.npmjs.com/package/lucide-react) — ícones
+- [`qrcode.react`](https://www.npmjs.com/package/qrcode.react) — geração de QR Code
+- [`tailwindcss`](https://tailwindcss.com/) — utilitários de estilo
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Todas essas bibliotecas são instaladas automaticamente com `npm install`.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📝 Licença
+Distribuído sob a licença MIT. Consulte o arquivo [LICENSE](../LICENSE) para mais detalhes.
