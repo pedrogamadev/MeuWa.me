@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes } from 'react';
+import type { InputHTMLAttributes, ReactNode } from 'react';
 import { cn } from '../lib/utils';
 
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -6,6 +6,7 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   helperText?: string;
   theme?: 'light' | 'dark';
+  labelAdornment?: ReactNode;
 }
 
 export function InputField({
@@ -14,12 +15,20 @@ export function InputField({
   helperText,
   className,
   theme = 'dark',
+  labelAdornment,
   ...props
 }: InputFieldProps) {
   const isDark = theme === 'dark';
   return (
     <label className={cn('flex flex-col gap-2 text-sm font-medium', isDark ? 'text-white/80' : 'text-slate-800')}>
-      <span className={cn('text-xs uppercase tracking-wide', isDark ? 'text-white/60' : 'text-slate-500')}>{label}</span>
+      <span
+        className={cn('text-xs uppercase tracking-wide', isDark ? 'text-white/60' : 'text-slate-500')}
+      >
+        <span className="inline-flex items-center gap-2">
+          {label}
+          {labelAdornment}
+        </span>
+      </span>
       <input
         className={cn(
           'w-full rounded-2xl border px-4 py-3 text-base shadow-inner transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/60',

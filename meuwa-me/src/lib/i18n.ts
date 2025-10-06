@@ -115,6 +115,26 @@ interface Translation {
   languageSwitcher: {
     label: string;
   };
+  common: {
+    close: string;
+  };
+  help: {
+    nameInfoButton: string;
+    nameInfoAria: string;
+    nameInfoTitle: string;
+    nameInfoDescription: string;
+    nameInfoAction: string;
+  };
+  tutorial: {
+    title: string;
+    description: string;
+    steps: Array<{ title: string; description: string }>;
+    progressLabel: string;
+    skip: string;
+    next: string;
+    previous: string;
+    finish: string;
+  };
 }
 
 export const translations: Record<Language, Translation> = {
@@ -125,7 +145,7 @@ export const translations: Record<Language, Translation> = {
     heroSubtitle: 'Automatize o contato com seus clientes e personalize cada detalhe.',
     developerCredit: 'Desenvolvido por Arabella.dev 💜',
     numberLabel: 'Número de WhatsApp',
-    numberPlaceholder: 'Ex.: 11 911111111',
+    numberPlaceholder: 'Ex.: 84 991926432',
     numberHelper: 'Digite DDD + número (somente números). Nós adicionamos o +55 automaticamente.',
     messageLabel: 'Mensagem (opcional)',
     messagePlaceholder: 'Oi! Criei esse link do WhatsApp para facilitar nosso contato.',
@@ -260,6 +280,43 @@ export const translations: Record<Language, Translation> = {
     languageSwitcher: {
       label: 'Idioma',
     },
+    common: {
+      close: 'Fechar',
+    },
+    help: {
+      nameInfoButton: 'Como personalizar o nome?',
+      nameInfoAria: 'Saiba como personalizar o nome automaticamente',
+      nameInfoTitle: 'Personalize o nome automaticamente',
+      nameInfoDescription:
+        "Para que {{name}} funcione na mensagem, abra a personalização avançada e preencha o campo 'Nome do contato'. Assim o link já chega com o nome certo para cada pessoa.",
+      nameInfoAction: 'Abrir personalização avançada',
+    },
+    tutorial: {
+      title: 'Bem-vindo ao MeuWa.me',
+      description: 'Veja como gerar seus links do WhatsApp em poucos passos.',
+      steps: [
+        {
+          title: '1. Informe o número',
+          description:
+            'Digite o DDD + número (somente números). O +55 é adicionado automaticamente e você pode validar o contato antes de gerar.',
+        },
+        {
+          title: '2. Crie a mensagem',
+          description:
+            'Escreva uma mensagem opcional usando {{name}} para personalizar o nome. Você também pode aplicar templates prontos ou salvar os seus.',
+        },
+        {
+          title: '3. Personalize e compartilhe',
+          description:
+            'Use a personalização avançada para preencher nome, UTMs e encurtar o link. Depois copie, abra no WhatsApp ou gere um QR Code.',
+        },
+      ],
+      progressLabel: 'Passo {{current}} de {{total}}',
+      skip: 'Pular tutorial',
+      next: 'Próximo',
+      previous: 'Voltar',
+      finish: 'Começar a usar',
+    },
   },
   en: {
     languageName: 'English',
@@ -268,7 +325,7 @@ export const translations: Record<Language, Translation> = {
     heroSubtitle: 'Automate your contact flow and personalize every detail.',
     developerCredit: 'Crafted by Arabella.dev 💜',
     numberLabel: 'WhatsApp number',
-    numberPlaceholder: 'Eg.: 11 911111111',
+    numberPlaceholder: 'Eg.: 84 991926432',
     numberHelper: 'Type area code + number (digits only). We automatically add +55.',
     messageLabel: 'Message (optional)',
     messagePlaceholder: 'Hi! I created this WhatsApp link so we can talk easily.',
@@ -403,6 +460,43 @@ export const translations: Record<Language, Translation> = {
     languageSwitcher: {
       label: 'Language',
     },
+    common: {
+      close: 'Close',
+    },
+    help: {
+      nameInfoButton: 'How does name personalization work?',
+      nameInfoAria: 'Learn how to personalize the contact name automatically',
+      nameInfoTitle: 'Personalize the contact name automatically',
+      nameInfoDescription:
+        "To replace {{name}} in the message, open Advanced customization and fill in the 'Contact name' field. Each link can carry the correct name for the person you will contact.",
+      nameInfoAction: 'Open advanced customization',
+    },
+    tutorial: {
+      title: 'Welcome to MeuWa.me',
+      description: 'Follow these quick steps to create your WhatsApp links.',
+      steps: [
+        {
+          title: '1. Enter the number',
+          description:
+            'Type the area code + number (digits only). We add +55 automatically and help you validate the contact before generating.',
+        },
+        {
+          title: '2. Craft the message',
+          description:
+            'Write an optional message using {{name}} to personalize the contact. You can also apply ready-made templates or save your own.',
+        },
+        {
+          title: '3. Customize and share',
+          description:
+            'Use Advanced customization to fill in the name, UTMs and shorten the link. Then copy, open on WhatsApp or create a QR Code.',
+        },
+      ],
+      progressLabel: 'Step {{current}} of {{total}}',
+      skip: 'Skip tutorial',
+      next: 'Next',
+      previous: 'Back',
+      finish: 'Start using',
+    },
   },
   es: {
     languageName: 'Español',
@@ -411,7 +505,7 @@ export const translations: Record<Language, Translation> = {
     heroSubtitle: 'Automatiza el contacto con tus clientes y personaliza cada detalle.',
     developerCredit: 'Desarrollado por Arabella.dev 💜',
     numberLabel: 'Número de WhatsApp',
-    numberPlaceholder: 'Ej.: 11 911111111',
+    numberPlaceholder: 'Ej.: 84 991926432',
     numberHelper: 'Escribe código de área + número (solo dígitos). Agregamos +55 automáticamente.',
     messageLabel: 'Mensaje (opcional)',
     messagePlaceholder: '¡Hola! Creé este enlace de WhatsApp para facilitar nuestro contacto.',
@@ -545,6 +639,43 @@ export const translations: Record<Language, Translation> = {
     },
     languageSwitcher: {
       label: 'Idioma',
+    },
+    common: {
+      close: 'Cerrar',
+    },
+    help: {
+      nameInfoButton: '¿Cómo personalizar el nombre?',
+      nameInfoAria: 'Aprende a personalizar el nombre automáticamente',
+      nameInfoTitle: 'Personaliza el nombre automáticamente',
+      nameInfoDescription:
+        "Para que {{name}} se reemplace en el mensaje, abre la personalización avanzada y completa el campo 'Nombre del contacto'. Así cada enlace ya incluye el nombre correcto.",
+      nameInfoAction: 'Abrir personalización avanzada',
+    },
+    tutorial: {
+      title: 'Bienvenido a MeuWa.me',
+      description: 'Conoce los pasos principales para crear tus enlaces de WhatsApp.',
+      steps: [
+        {
+          title: '1. Ingresa el número',
+          description:
+            'Escribe el código de área + número (solo dígitos). Agregamos +55 automáticamente y te ayudamos a validar el contacto antes de generar.',
+        },
+        {
+          title: '2. Prepara el mensaje',
+          description:
+            'Redacta un mensaje opcional usando {{name}} para personalizar el nombre. También puedes aplicar plantillas listas o guardar las tuyas.',
+        },
+        {
+          title: '3. Personaliza y comparte',
+          description:
+            'Usa la personalización avanzada para completar el nombre, UTMs y acortar el enlace. Después copia, abre en WhatsApp o crea un código QR.',
+        },
+      ],
+      progressLabel: 'Paso {{current}} de {{total}}',
+      skip: 'Omitir tutorial',
+      next: 'Siguiente',
+      previous: 'Atrás',
+      finish: 'Comenzar a usar',
     },
   },
 };

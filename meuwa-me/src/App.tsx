@@ -23,6 +23,7 @@ import { TextAreaField } from './components/TextAreaField';
 import { ThemeToggle } from './components/ThemeToggle';
 import { Toast } from './components/Toast';
 import { InstagramModal } from './components/InstagramModal';
+import { Dialog } from './components/Dialog';
 import {
   formatBrazilianNumber,
   isValidBrazilianMobile,
@@ -45,6 +46,7 @@ const INSTAGRAM_URL =
 const TEMPLATE_STORAGE_KEY = 'meuwa-custom-templates';
 const HISTORY_STORAGE_KEY = 'meuwa-history';
 const LANGUAGE_STORAGE_KEY = 'meuwa-language';
+const TUTORIAL_STORAGE_KEY = 'meuwa-tutorial-complete';
 const MAX_HISTORY_ITEMS = 25;
 const localeByLanguage: Record<Language, string> = {
   pt: 'pt-BR',
@@ -263,6 +265,7 @@ function App() {
   const toastTimeoutRef = useRef<number | null>(null);
   const instagramTimerRef = useRef<number | null>(null);
   const qrCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const advancedSectionRef = useRef<HTMLDivElement | null>(null);
   const [showInstagramModal, setShowInstagramModal] = useState(false);
   const [isShortening, setIsShortening] = useState(false);
   const [history, setHistory] = useState<LinkHistoryEntry[]>(() => loadHistoryStorage());
@@ -274,6 +277,9 @@ function App() {
   const [newTemplateTitle, setNewTemplateTitle] = useState('');
   const [newTemplateMessage, setNewTemplateMessage] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showNameInfo, setShowNameInfo] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
   const isDark = theme === 'dark';
   const primaryTextClass = isDark ? 'text-white' : 'text-slate-900';
   const secondaryTextClass = isDark ? 'text-white/70' : 'text-slate-600';
@@ -291,12 +297,39 @@ function App() {
   const qrColors = isDark
     ? { bg: '#121212', fg: '#ffffff' }
     : { bg: '#ffffff', fg: '#0f172a' };
+  const tutorialSteps = text.tutorial.steps;
+  const totalTutorialSteps = tutorialSteps.length;
+  const hasTutorialSteps = totalTutorialSteps > 0;
+  const safeTutorialIndex = hasTutorialSteps ? Math.min(tutorialStep, totalTutorialSteps - 1) : 0;
+  const currentTutorialStep =
+    hasTutorialSteps && tutorialSteps[safeTutorialIndex]
+      ? tutorialSteps[safeTutorialIndex]
+      : { title: '', description: '' };
+  const tutorialProgress = useMemo(() => {
+    if (!hasTutorialSteps) {
+      return '';
+    }
+    return text.tutorial.progressLabel
+      .replace('{{current}}', String(safeTutorialIndex + 1))
+      .replace('{{total}}', String(totalTutorialSteps));
+  }, [hasTutorialSteps, safeTutorialIndex, text.tutorial.progressLabel, totalTutorialSteps]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
     }
   }, [language]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    const tutorialSeen = window.localStorage.getItem(TUTORIAL_STORAGE_KEY);
+    if (!tutorialSeen) {
+      setTutorialStep(0);
+      setShowTutorial(true);
+    }
+  }, []);
 
   useEffect(() => {
     const storedLink = typeof window !== 'undefined' ? window.localStorage.getItem(LINK_STORAGE_KEY) : null;
@@ -563,6 +596,46 @@ function App() {
     handleCloseInstagramModal();
   }, [handleCloseInstagramModal, text.instagramToast, triggerToast]);
 
+  const handleCompleteTutorial = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(TUTORIAL_STORAGE_KEY, '1');
+    }
+    setShowTutorial(false);
+    setTutorialStep(0);
+  }, []);
+
+  const handleSkipTutorial = useCallback(() => {
+    handleCompleteTutorial();
+  }, [handleCompleteTutorial]);
+
+  const handleNextTutorial = useCallback(() => {
+    setTutorialStep((current) => {
+      if (!hasTutorialSteps) {
+        handleCompleteTutorial();
+        return current;
+      }
+      if (current >= totalTutorialSteps - 1) {
+        handleCompleteTutorial();
+        return current;
+      }
+      return current + 1;
+    });
+  }, [handleCompleteTutorial, hasTutorialSteps, totalTutorialSteps]);
+
+  const handlePreviousTutorial = useCallback(() => {
+    setTutorialStep((current) => (current > 0 ? current - 1 : 0));
+  }, []);
+
+  const handleOpenAdvancedFromHelp = useCallback(() => {
+    setShowAdvanced(true);
+    setShowNameInfo(false);
+    if (typeof window !== 'undefined') {
+      window.requestAnimationFrame(() => {
+        advancedSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    }
+  }, []);
+
   const formattedLinkLabel = useMemo(() => {
     if (!generatedLink) return '';
     return (shortLink || generatedLink).replace('https://', '');
@@ -773,6 +846,104 @@ function App() {
         onVisit={handleOpenInstagram}
         theme={theme}
       />
+      <Dialog
+        open={showNameInfo}
+        onClose={() => setShowNameInfo(false)}
+        theme={theme}
+        title={text.help.nameInfoTitle}
+        description={text.help.nameInfoDescription}
+        closeLabel={text.common.close}
+        footer={
+          <>
+            <Button
+              theme={theme}
+              type="button"
+              variant="ghost"
+              onClick={() => setShowNameInfo(false)}
+            >
+              {text.common.close}
+            </Button>
+            <Button theme={theme} type="button" onClick={handleOpenAdvancedFromHelp}>
+              {text.help.nameInfoAction}
+            </Button>
+          </>
+        }
+      />
+      <Dialog
+        open={showTutorial}
+        onClose={handleCompleteTutorial}
+        theme={theme}
+        title={text.tutorial.title}
+        description={text.tutorial.description}
+        size="lg"
+        closeLabel={text.common.close}
+        footer={
+          hasTutorialSteps ? (
+            <>
+              <Button
+                theme={theme}
+                type="button"
+                variant="ghost"
+                onClick={handlePreviousTutorial}
+                disabled={safeTutorialIndex === 0}
+              >
+                {text.tutorial.previous}
+              </Button>
+              <Button theme={theme} type="button" onClick={handleNextTutorial}>
+                {safeTutorialIndex === totalTutorialSteps - 1
+                  ? text.tutorial.finish
+                  : text.tutorial.next}
+              </Button>
+            </>
+          ) : (
+            <Button theme={theme} type="button" onClick={handleCompleteTutorial}>
+              {text.tutorial.finish}
+            </Button>
+          )
+        }
+      >
+        {hasTutorialSteps ? (
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <span
+                className={cn(
+                  'text-xs font-semibold uppercase tracking-wide',
+                  isDark ? 'text-white/60' : 'text-slate-500',
+                )}
+              >
+                {tutorialProgress}
+              </span>
+              <button
+                type="button"
+                onClick={handleSkipTutorial}
+                className={cn(
+                  'rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40',
+                  isDark
+                    ? 'text-accent hover:bg-white/10'
+                    : 'text-indigo-600 hover:bg-indigo-50',
+                )}
+              >
+                {text.tutorial.skip}
+              </button>
+            </div>
+            <div
+              className={cn(
+                'rounded-2xl border p-5 transition-colors',
+                isDark
+                  ? 'border-white/10 bg-white/5 text-white'
+                  : 'border-slate-200 bg-slate-50 text-slate-800',
+              )}
+            >
+              <h3 className={cn('text-lg font-semibold', isDark ? 'text-white' : 'text-slate-900')}>
+                {currentTutorialStep.title}
+              </h3>
+              <p className={cn('mt-2 text-sm leading-relaxed', isDark ? 'text-white/70' : 'text-slate-600')}>
+                {currentTutorialStep.description}
+              </p>
+            </div>
+          </div>
+        ) : null}
+      </Dialog>
       <div className="card relative w-full max-w-4xl overflow-hidden">
         <div className="absolute inset-x-24 -top-24 h-48 rounded-full bg-accent/40 blur-3xl" aria-hidden />
         <div className="relative z-10 flex flex-col gap-8 p-8">
@@ -840,6 +1011,21 @@ function App() {
               <TextAreaField
                 theme={theme}
                 label={text.messageLabel}
+                labelAdornment={
+                  <button
+                    type="button"
+                    onClick={() => setShowNameInfo(true)}
+                    className={cn(
+                      'inline-flex h-5 w-5 items-center justify-center rounded-full border text-[11px] font-bold leading-none transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40',
+                      isDark
+                        ? 'border-sky-400/70 text-sky-100 hover:bg-sky-500/20 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900'
+                        : 'border-sky-500 text-sky-600 hover:bg-sky-50 focus-visible:ring-offset-2 focus-visible:ring-offset-white',
+                    )}
+                    aria-label={text.help.nameInfoAria}
+                  >
+                    ?
+                  </button>
+                }
                 placeholder={text.messagePlaceholder}
                 value={message}
                 onChange={(event) => {
@@ -861,6 +1047,7 @@ function App() {
               />
 
               <div
+                ref={advancedSectionRef}
                 className={cn(
                   'flex flex-col gap-4 rounded-2xl border p-5 transition-colors',
                   isDark ? 'border-white/10 bg-white/5' : 'border-slate-200 bg-white',
