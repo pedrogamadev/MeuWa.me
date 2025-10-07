@@ -55,6 +55,7 @@ const localeByLanguage: Record<Language, string> = {
 };
 
 const NAME_PLACEHOLDER_REGEX = /\{\{\s*name\s*\}\}/gi;
+const NAME_PLACEHOLDER_TEST_REGEX = /\{\{\s*name\s*\}\}/i;
 
 const getUuid = () =>
   typeof crypto !== 'undefined' && 'randomUUID' in crypto
@@ -110,7 +111,7 @@ interface LinkHistoryEntry {
 const applyContactName = (message: string, name: string) => {
   if (!message) return '';
   const trimmedName = name.trim();
-  if (!NAME_PLACEHOLDER_REGEX.test(message)) {
+  if (!NAME_PLACEHOLDER_TEST_REGEX.test(message)) {
     return message;
   }
   const replaced = message.replace(NAME_PLACEHOLDER_REGEX, trimmedName || '');

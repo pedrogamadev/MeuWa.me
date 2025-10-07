@@ -325,7 +325,7 @@ export const translations: Record<Language, Translation> = {
     heroSubtitle: 'Automate your contact flow and personalize every detail.',
     developerCredit: 'Crafted by Arabella.dev 💜',
     numberLabel: 'WhatsApp number',
-    numberPlaceholder: 'Eg.: 84 991926432',
+    numberPlaceholder: 'E.g.: 84 991926432',
     numberHelper: 'Type area code + number (digits only). We automatically add +55.',
     messageLabel: 'Message (optional)',
     messagePlaceholder: 'Hi! I created this WhatsApp link so we can talk easily.',

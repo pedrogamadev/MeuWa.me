@@ -1,6 +1,6 @@
 # MeuWa.me — WhatsApp Link Generator
 
-MeuWa.me é uma aplicação web de página única criada com **Vite + React + TypeScript** e estilizada com **TailwindCSS**. Ela permite gerar links personalizados do WhatsApp (`https://wa.me/`) com número de telefone e mensagem pré-preenchida, além de oferecer pré-visualização, cópia rápida, abertura no WhatsApp e geração de QR Code.
+MeuWa.me é uma aplicação web de página única criada com **Vite + React + TypeScript** e estilizada com **TailwindCSS**. Ela permite gerar links personalizados do WhatsApp (`https://wa.me/`) com número de telefone e mensagem pré-preenchida, além de oferecer cópia rápida, abertura no WhatsApp e geração de QR Code.
 
 ## 📦 Pré-requisitos
 - [Node.js](https://nodejs.org/) versão 18 ou superior (inclui o npm)
@@ -24,6 +24,7 @@ MeuWa.me é uma aplicação web de página única criada com **Vite + React + Ty
 - `npm run build`: gera a build de produção
 - `npm run preview`: serve a build de produção localmente
 - `npm run lint`: executa o ESLint
+- `npm run test`: executa os testes unitários com Vitest
 
 ## 📁 Estrutura principal
 ```
